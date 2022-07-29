@@ -16,4 +16,7 @@ export class Address {
 
   @Column()
   district: string;
+
+  @Column()
+  city: string;
 }
