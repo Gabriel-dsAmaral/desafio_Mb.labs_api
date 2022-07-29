@@ -94,6 +94,11 @@ class EventService {
       stripUnknown: true,
     });
   };
+
+  isActiveEvent = async ({ event }: Request) => {
+    await EventRepo.update(event.id, { is_active: !event.is_active });
+    return { message: `is-active is now ${!event.is_active}` };
+  };
 }
 
 export default new EventService();
