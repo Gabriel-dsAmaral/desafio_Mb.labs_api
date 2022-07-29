@@ -1,12 +1,12 @@
-import { compare } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  BeforeInsert,
+  BeforeUpdate,
 } from "typeorm";
 import { Event } from "./event.entity";
 
@@ -30,7 +30,7 @@ export class User {
   @Column()
   banner_url: string;
 
-  @Column()
+  @Column({ default: false })
   is_superuser: boolean;
 
   @ManyToMany(() => Event, (event) => event.users, { eager: true })
@@ -40,4 +40,10 @@ export class User {
   comparePwd = async (pwd: string): Promise<boolean> => {
     return await compare(pwd, this.password);
   };
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    return this.password && (this.password = await hash(this.password, 10));
+  }
 }
