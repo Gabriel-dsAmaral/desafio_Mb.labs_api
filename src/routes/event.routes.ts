@@ -37,4 +37,12 @@ eventRouter.patch(
   EventController.updateEvent
 );
 
+eventRouter.patch(
+  "/events/isactive/:id",
+  validateToken,
+  verifyAdmin,
+  getEventByIdOr404,
+  EventController.isActive
+);
+
 export default eventRouter;

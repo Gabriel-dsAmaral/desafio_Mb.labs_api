@@ -21,6 +21,11 @@ class EventController {
     const event = await EventService.updateEvent(req);
     return res.status(200).json(event);
   };
+
+  isActive = async (req: Request, res: Response) => {
+    const event = await EventService.isActiveEvent(req);
+    return res.status(200).json(event);
+  };
 }
 
 export default new EventController();
