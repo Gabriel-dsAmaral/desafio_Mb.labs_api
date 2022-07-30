@@ -2,7 +2,7 @@ import { User } from "../entities/user.entity";
 import { Request, Response } from "express";
 import { AssertsShape } from "yup/lib/object";
 import userRepository from "../repositories/user.repository";
-import { EventRepo } from "../repositories";
+import { EventRepo, ticketsRepo } from "../repositories";
 import { compare } from "bcrypt";
 import { sign, decode } from "jsonwebtoken";
 import { config } from "dotenv";
@@ -141,13 +141,28 @@ class UserService {
       throw new ErrorHTTP(404, "Event not found");
     }
 
-    if (!user.my_events.includes(event)) {
+    if (user.my_events.find((event) => event.id == req.params.id)) {
       throw new ErrorHTTP(404, "Event already registered");
     }
 
     user.my_events = [...user.my_events, event];
 
     await userRepository.save(user);
+
+    const tickets = {
+      id: event.tickets.id,
+      avaible_quantity: event.tickets.avaible_quantity - 1,
+      price: event.tickets.price,
+      sold_amount: event.tickets.sold_amount + 1,
+    };
+
+    await ticketsRepo.update(event.tickets.id, {
+      ...tickets,
+    });
+
+    event.tickets = Object.assign(event.tickets, tickets);
+
+    await EventRepo.update(event.id, { ...event });
 
     const updatedUser = await userRepository.findOne({ email: decoded.email });
 
@@ -175,7 +190,7 @@ class UserService {
       throw new ErrorHTTP(404, "Event not found");
     }
 
-    if (user.my_events.includes(event) == false) {
+    if (!user.my_events.find((event) => event.id == req.params.id)) {
       throw new ErrorHTTP(404, "Event not registered");
     }
 
@@ -186,6 +201,19 @@ class UserService {
     user.my_events = user.my_events.filter(removeDuplicated);
 
     await userRepository.save(user);
+
+    const tickets = {
+      id: event.tickets.id,
+      avaible_quantity: event.tickets.avaible_quantity + 1,
+      price: event.tickets.price,
+      sold_amount: event.tickets.sold_amount - 1,
+    };
+
+    await ticketsRepo.update(event.tickets.id, {
+      ...tickets,
+    });
+
+    event.tickets = Object.assign(event.tickets, tickets);
 
     const updatedUser = await userRepository.findOne({ email: decoded.email });
 
