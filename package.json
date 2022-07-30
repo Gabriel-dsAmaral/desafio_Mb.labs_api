@@ -45,11 +45,12 @@
   },
   "scripts": {
     "dev": "ts-node-dev --files --rs src/server.ts",
-    "start": "ts-node src/index.ts",
+    "start": "node dist/app.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:create": "typeorm-ts-node-commonjs migration:create",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d ./src/data-source.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d ./src/data-source.ts",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "build": "tsc"
   }
 }
