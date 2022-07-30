@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { hashSync } from "bcrypt";
+import { serializedArrEventsSchema } from "../event/create.schema";
 
 const createUserSchema = yup.object().shape({
   user_name: yup.string().required(),
@@ -23,6 +24,7 @@ const responseObject = {
   email: yup.string().email().lowercase().required(),
   avatar_url: yup.string().required(),
   banner_url: yup.string().required(),
+  my_events: serializedArrEventsSchema,
 };
 
 const newShape = Object.entries(responseObject)

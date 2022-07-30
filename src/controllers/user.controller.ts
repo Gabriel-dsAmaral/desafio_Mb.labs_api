@@ -27,6 +27,14 @@ class UserController {
   update = async (req: Request, res: Response) => {
     return res.status(200).json(await UserService.update(req));
   };
+
+  addEvents = async (req: Request, res: Response) => {
+    return res.status(200).json(await UserService.addEvent(req));
+  };
+
+  removeEvents = async (req: Request, res: Response) => {
+    return res.status(200).json(await UserService.removeEvent(req));
+  };
 }
 
 export default new UserController();

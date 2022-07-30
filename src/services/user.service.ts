@@ -2,6 +2,7 @@ import { User } from "../entities/user.entity";
 import { Request, Response } from "express";
 import { AssertsShape } from "yup/lib/object";
 import userRepository from "../repositories/user.repository";
+import { EventRepo, ticketsRepo } from "../repositories";
 import { compare } from "bcrypt";
 import { sign, decode } from "jsonwebtoken";
 import { config } from "dotenv";
@@ -76,7 +77,7 @@ class UserService {
 
     const decoded: any = decode(token);
 
-    if (!decoded.isAdmin) {
+    if (!decoded.is_superuser) {
       const user = (await userRepository.findOne({
         email: decoded.email,
       })) as User | null;
@@ -117,6 +118,106 @@ class UserService {
     return await serializedOneUser.validate(updatedUser, {
       stripUnknown: true,
     });
+  };
+
+  addEvent = async (req: Request) => {
+    const token: string | any = req.headers.authorization?.split(" ")[1];
+
+    const decoded: any = decode(token);
+
+    const user = (await userRepository.findOne({
+      email: decoded.email,
+    })) as User | null;
+
+    if (!user) {
+      throw new ErrorHTTP(404, "User not found");
+    }
+
+    const event = await EventRepo.findOne({
+      id: req.params.id,
+    });
+
+    if (!event) {
+      throw new ErrorHTTP(404, "Event not found");
+    }
+
+    if (user.my_events.find((event) => event.id == req.params.id)) {
+      throw new ErrorHTTP(404, "Event already registered");
+    }
+
+    user.my_events = [...user.my_events, event];
+
+    await userRepository.save(user);
+
+    const tickets = {
+      id: event.tickets.id,
+      avaible_quantity: event.tickets.avaible_quantity - 1,
+      price: event.tickets.price,
+      sold_amount: event.tickets.sold_amount + 1,
+    };
+
+    await ticketsRepo.update(event.tickets.id, {
+      ...tickets,
+    });
+
+    event.tickets = Object.assign(event.tickets, tickets);
+
+    await EventRepo.update(event.id, { ...event });
+
+    const updatedUser = await userRepository.findOne({ email: decoded.email });
+
+    return await serializedOneUser.validate(updatedUser);
+  };
+
+  removeEvent = async (req: Request) => {
+    const token: string | any = req.headers.authorization?.split(" ")[1];
+
+    const decoded: any = decode(token);
+
+    const user = (await userRepository.findOne({
+      email: decoded.email,
+    })) as User | null;
+
+    if (!user) {
+      throw new ErrorHTTP(404, "User not found");
+    }
+
+    const event = await EventRepo.findOne({
+      id: req.params.id,
+    });
+
+    if (!event) {
+      throw new ErrorHTTP(404, "Event not found");
+    }
+
+    if (!user.my_events.find((event) => event.id == req.params.id)) {
+      throw new ErrorHTTP(404, "Event not registered");
+    }
+
+    function removeDuplicated(value) {
+      return value == event;
+    }
+
+    user.my_events = user.my_events.filter(removeDuplicated);
+
+    await userRepository.save(user);
+
+    const tickets = {
+      id: event.tickets.id,
+      avaible_quantity: event.tickets.avaible_quantity + 1,
+      price: event.tickets.price,
+      sold_amount: event.tickets.sold_amount - 1,
+    };
+
+    await ticketsRepo.update(event.tickets.id, {
+      ...tickets,
+    });
+
+    event.tickets = Object.assign(event.tickets, tickets);
+
+    const updatedUser = await userRepository.findOne({ email: decoded.email });
+
+    return await serializedOneUser.validate(updatedUser);
   };
 }
 

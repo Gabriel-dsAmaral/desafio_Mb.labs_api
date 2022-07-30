@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { serializedArrEventsSchema } from "../event";
 
 const responseObject = {
   id: yup.string().uuid().required(),
@@ -6,6 +7,7 @@ const responseObject = {
   email: yup.string().email().lowercase().required(),
   avatar_url: yup.string().required(),
   banner_url: yup.string().required(),
+  my_events: serializedArrEventsSchema,
 };
 
 const newShape = Object.entries(responseObject)

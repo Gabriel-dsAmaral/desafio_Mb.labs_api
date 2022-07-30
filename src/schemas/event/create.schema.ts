@@ -38,7 +38,7 @@ const responseObject = {
   address: yup
     .object()
     .shape({
-      // city: yup.string().required(),
+      city: yup.string().required(),
       street: yup.string().required(),
       number: yup.number().max(99999).required(),
       zipCode: yup.string().required(),

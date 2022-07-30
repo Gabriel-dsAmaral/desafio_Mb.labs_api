@@ -37,4 +37,16 @@ userRouter.patch(
   userController.update
 );
 
+userRouter.patch(
+  "/users/event/add/:id",
+  validateToken,
+  userController.addEvents
+);
+
+userRouter.patch(
+  "/users/event/remove/:id",
+  validateToken,
+  userController.removeEvents
+);
+
 export default userRouter;
