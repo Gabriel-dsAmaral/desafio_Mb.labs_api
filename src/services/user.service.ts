@@ -57,7 +57,7 @@ class UserService {
     }
 
     const token = sign(
-      { email: user.email, is_superuser: user.is_superuser },
+      { id: user.id, email: user.email, is_superuser: user.is_superuser },
       process.env.SECRET_KEY as string,
       {
         expiresIn: process.env.EXPIRES_IN as string,

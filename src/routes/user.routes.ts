@@ -14,8 +14,6 @@ const userRouter = Router();
 userRouter.post(
   "/signup",
   validadeSchema(createUserSchema),
-  validateToken,
-  verifyAdmin,
   userController.createUser
 );
 userRouter.post(

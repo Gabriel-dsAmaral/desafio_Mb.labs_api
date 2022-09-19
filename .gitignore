@@ -9,3 +9,4 @@ temp/
 package-lock*
 :memory
 node_modules
+dist/
