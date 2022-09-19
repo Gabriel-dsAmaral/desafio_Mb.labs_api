@@ -1,6 +1,5 @@
 import { Router } from "express";
 import EventController from "../controllers/event.controller";
-// import validateToken from "../middlewares/validateToken.middleware";
 import { createEventSchema, updateEstablishmentSchema } from "../schemas/event";
 import {
   validadeSchema,
