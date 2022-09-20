@@ -1,4 +1,11 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  JoinColumn,
+} from "typeorm";
 import { User } from "./user.entity";
 import { Event } from "./event.entity";
 
@@ -18,6 +25,8 @@ export class CommentEvents {
 
   @ManyToOne(() => User, (user) => user.commentEvent)
   user: User;
+  @JoinColumn()
+  user_data: User;
 
   @ManyToOne(() => Event, (event) => event.commentEvent)
   event: Event;

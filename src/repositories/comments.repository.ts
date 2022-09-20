@@ -1,4 +1,4 @@
-import { Repository, UpdateResult } from "typeorm";
+import { Repository, UpdateResult, DeleteResult } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { CommentEvents } from "../entities/commentEvent.entity";
 
@@ -10,6 +10,7 @@ interface ICommentRepo {
     id: string,
     payload: Partial<CommentEvents>
   ) => Promise<UpdateResult>;
+  delete: (id: string) => Promise<DeleteResult>;
 }
 
 class commentsRepo implements ICommentRepo {
@@ -31,6 +32,10 @@ class commentsRepo implements ICommentRepo {
 
   update = async (id: string, payload: Partial<CommentEvents>) => {
     return await this.ormRepo.update(id, { ...payload });
+  };
+
+  delete = async (id: string) => {
+    return await this.ormRepo.delete(id);
   };
 }
 

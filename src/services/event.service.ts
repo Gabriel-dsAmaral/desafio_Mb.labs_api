@@ -38,7 +38,6 @@ class EventService {
 
   getEvents = async ({ decoded }: Request) => {
     const allEvents = await EventRepo.getAll();
-    console.log(allEvents);
 
     return await serializedArrEventsSchema.validate(allEvents, {
       stripUnknown: true,
