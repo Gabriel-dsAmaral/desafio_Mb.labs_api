@@ -57,6 +57,8 @@ export class Event {
 
   @OneToMany(() => CommentEvents, (commentEvent) => commentEvent.event)
   commentEvent: CommentEvents[];
+  @JoinTable()
+  comments: CommentEvents[];
 
   @OneToMany(() => RateEvents, (rateEvent) => rateEvent.event)
   rateEvent: RateEvents[];
