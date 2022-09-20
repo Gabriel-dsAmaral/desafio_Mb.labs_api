@@ -7,7 +7,10 @@ import {
   JoinTable,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from "typeorm";
+import { CommentEvents } from "./commentEvent.entity";
+import { RateEvents } from "./rateEvent.entity";
 import { Event } from "./event.entity";
 
 @Entity("users")
@@ -32,6 +35,12 @@ export class User {
 
   @Column({ default: false })
   is_superuser: boolean;
+
+  @OneToMany(() => CommentEvents, (commentEvent) => commentEvent.user)
+  commentEvent: CommentEvents[];
+
+  @OneToMany(() => RateEvents, (rateEvent) => rateEvent.user)
+  rateEvent: RateEvents[];
 
   @ManyToMany(() => Event, (event) => event.users, { eager: true })
   @JoinTable()
