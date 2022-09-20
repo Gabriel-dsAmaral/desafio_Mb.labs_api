@@ -1,4 +1,3 @@
-import { privateEncrypt } from "crypto";
 import { NextFunction, Request, Response } from "express";
 import ErrorHTTP from "../errors/ErrorHTTP";
 import { EventRepo } from "../repositories";

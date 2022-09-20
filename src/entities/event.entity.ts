@@ -57,12 +57,13 @@ export class Event {
 
   @OneToMany(() => CommentEvents, (commentEvent) => commentEvent.event)
   commentEvent: CommentEvents[];
-  @JoinTable()
-  comments: CommentEvents[];
 
   @OneToMany(() => RateEvents, (rateEvent) => rateEvent.event)
   rateEvent: RateEvents[];
 
   @ManyToMany(() => User, (user) => user.my_events, { lazy: true })
   users: User[];
+
+  @JoinColumn()
+  comments: CommentEvents;
 }
