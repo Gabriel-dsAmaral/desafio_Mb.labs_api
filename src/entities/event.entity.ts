@@ -6,10 +6,13 @@ import {
   JoinTable,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { Address } from "./address.entity";
 import { Tickets } from "./tickets.entity";
 import { User } from "./user.entity";
+import { CommentEvents } from "./commentEvent.entity";
+import { RateEvents } from "./rateEvent.entity";
 
 @Entity("events")
 export class Event {
@@ -48,6 +51,15 @@ export class Event {
 
   @Column({ default: true })
   is_active: boolean;
+
+  @Column({ default: 5 })
+  average_rate: number;
+
+  @OneToMany(() => CommentEvents, (commentEvent) => commentEvent.event)
+  commentEvent: CommentEvents[];
+
+  @OneToMany(() => RateEvents, (rateEvent) => rateEvent.event)
+  rateEvent: RateEvents[];
 
   @ManyToMany(() => User, (user) => user.my_events, { lazy: true })
   users: User[];
