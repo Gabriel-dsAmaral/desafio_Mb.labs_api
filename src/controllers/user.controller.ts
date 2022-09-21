@@ -8,14 +8,12 @@ class UserController {
     const user = await UserService.createUser(req);
     return res.status(201).json(user);
   };
+
   loginUser = async (req: Request, res: Response) => {
-    try {
-      const { status, message } = await UserService.loginUser(req.body);
-      return res.status(status).json(message);
-    } catch (err) {
-      return handleError(err, res);
-    }
+    const { status, message } = await UserService.loginUser(req.body);
+    return res.status(status).json(message);
   };
+
   getUser = async (req: Request, res: Response) => {
     return res.status(200).json(await UserService.getUser(req));
   };
