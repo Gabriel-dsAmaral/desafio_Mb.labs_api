@@ -16,7 +16,7 @@ services:
       - pg
     command: bash -c 'yarn migration:run && yarn dev'
   pg:
-    container_name: minimarketDB
+    container_name: fireOnEventsDB
     image: postgres
     env_file:
       - .env
