@@ -1,6 +1,6 @@
-FROM node:17.6.0
+FROM node:18.3.0
 WORKDIR /app
 COPY package*.json ./
-RUN yarn
-COPY . .
-ENV NODE_PATH=./src
+RUN yarn 
+COPY . . 
+ENV NODE_PATH=/src
