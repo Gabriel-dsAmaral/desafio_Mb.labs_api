@@ -19,7 +19,7 @@ rateRouter.post(
 );
 
 rateRouter.patch(
-  "/rate/:id",
+  "/rate",
   validateToken,
   validadeSchema(createrateSchema),
   RateController.updateRate
