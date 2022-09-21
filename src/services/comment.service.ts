@@ -19,7 +19,9 @@ class CommentService {
       comment: comment,
     } as CommentEvents);
 
-    return commentSerializer(newComment);
+    console.log(newComment);
+
+    return commentSerializer(await commentsRepo.findOne({ id: newComment.id }));
   };
 
   updateComment = async ({ headers, comment, validated }: Request) => {

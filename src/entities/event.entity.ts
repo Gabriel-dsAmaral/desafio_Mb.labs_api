@@ -65,5 +65,5 @@ export class Event {
   users: User[];
 
   @JoinColumn()
-  comments: CommentEvents;
+  comments: CommentEvents[];
 }

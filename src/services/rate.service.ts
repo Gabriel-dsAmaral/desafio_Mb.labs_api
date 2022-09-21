@@ -51,8 +51,6 @@ class RateService {
 
     const rate = await ratesRepo.findOne({ userId: decoded.id });
 
-    console.log(rate);
-
     await ratesRepo.update(rate.id, {
       ...validated,
     });
