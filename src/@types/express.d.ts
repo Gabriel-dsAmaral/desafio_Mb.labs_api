@@ -18,6 +18,7 @@ declare global {
       decoded: TDecoded;
       userRequest: User;
       event: Event;
+      rate: RateEvents;
       comment: CommentEvents;
       findRepository: object;
     }

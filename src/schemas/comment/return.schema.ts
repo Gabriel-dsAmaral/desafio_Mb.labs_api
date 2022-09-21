@@ -1,13 +1,13 @@
 import UserRepo from "../../repositories/user.repository";
 
-interface Comment {
+interface Icomment {
   id?: string;
   userId: string;
   eventId: string;
   comment: string;
 }
 
-export const commentSerializer = async (comment: Comment) => {
+export const commentSerializer = async (comment: Icomment) => {
   const user = await UserRepo.findOne({ id: comment.userId });
   return {
     id: comment.id,
