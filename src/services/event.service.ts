@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { eventSerializer } from "../schemas/event/return.schema";
 import { Event } from "../entities/event.entity";
 import ErrorHTTP from "../errors/ErrorHTTP";
 import { EventRepo, addressRepo, ticketsRepo } from "../repositories";
@@ -45,9 +46,11 @@ class EventService {
   };
 
   getOneEvent = async ({ event }) => {
-    return await serializedCreateEventSchema.validate(event, {
-      stripUnknown: true,
-    });
+    // const Event = await serializedCreateEventSchema.validate(event, {
+    //   stripUnknown: true,
+    // });
+
+    return eventSerializer(event);
   };
 
   updateEvent = async ({ validated, event }: Request) => {

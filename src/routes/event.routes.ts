@@ -20,12 +20,7 @@ eventRouter.post(
 
 eventRouter.get("/events", EventController.getEvents);
 
-eventRouter.get(
-  "/events/:id",
-  validateToken,
-  getEventByIdOr404,
-  EventController.getOneEvent
-);
+eventRouter.get("/events/:id", getEventByIdOr404, EventController.getOneEvent);
 
 eventRouter.patch(
   "/events/:id",

@@ -23,10 +23,11 @@ export class CommentEvents {
   @Column()
   comment: string;
 
-  @ManyToOne(() => User, (user) => user.commentEvent)
-  user: User;
+  @ManyToOne((type) => User, (user) => user.commentEvent, {
+    eager: true,
+  })
   @JoinColumn()
-  user_data: User;
+  user: User;
 
   @ManyToOne(() => Event, (event) => event.commentEvent)
   event: Event;

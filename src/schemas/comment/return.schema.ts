@@ -1,18 +1,21 @@
-import UserRepo from "../../repositories/user.repository";
+import { CommentEvents } from "../../entities/commentEvent.entity";
 
-interface Icomment {
-  id?: string;
-  userId: string;
-  eventId: string;
-  comment: string;
-}
-
-export const commentSerializer = async (comment: Icomment) => {
-  const user = await UserRepo.findOne({ id: comment.userId });
+export const commentSerializer = (comment: CommentEvents) => {
   return {
     id: comment.id,
     comment: comment.comment,
-    user_name: user.user_name,
-    avatar: user.avatar_url,
+    user: {
+      id: comment.userId,
+      user_name: comment.user.user_name,
+      avatar_url: comment.user.avatar_url,
+    },
   };
+};
+
+export const arrCommentsSerializer = (array: CommentEvents[]) => {
+  const serializedArray = [];
+
+  array.forEach((comment) => serializedArray.push(commentSerializer(comment)));
+
+  return serializedArray;
 };
