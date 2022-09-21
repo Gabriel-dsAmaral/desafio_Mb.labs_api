@@ -35,6 +35,7 @@ const responseObject = {
   icon_url: yup.string().required(),
   is_remote: yup.boolean().required(),
   description: yup.string().required(),
+  average_rate: yup.number().required(),
   address: yup
     .object()
     .shape({

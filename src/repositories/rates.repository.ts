@@ -5,6 +5,7 @@ import { RateEvents } from "../entities/rateEvent.entity";
 interface IRateRepo {
   save: (rates: Partial<RateEvents>) => Promise<RateEvents>;
   findOne: (payload: object) => Promise<RateEvents | null>;
+  find: (payload: object) => Promise<RateEvents[] | null>;
   getAll: () => Promise<RateEvents[]>;
   update: (id: string, payload: Partial<RateEvents>) => Promise<UpdateResult>;
 }
@@ -22,6 +23,10 @@ class ratesRepo implements IRateRepo {
 
   findOne = async (payload: object) => {
     return await this.ormRepo.findOneBy({ ...payload });
+  };
+
+  find = async (payload: object) => {
+    return await this.ormRepo.find({ where: { ...payload } });
   };
 
   getAll = async () => await this.ormRepo.find();

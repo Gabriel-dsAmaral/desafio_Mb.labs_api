@@ -5,6 +5,7 @@ import { CommentEvents } from "../entities/commentEvent.entity";
 interface ICommentRepo {
   save: (comments: Partial<CommentEvents>) => Promise<CommentEvents>;
   findOne: (payload: object) => Promise<CommentEvents | null>;
+  find: (payload: object) => Promise<CommentEvents[] | null>;
   getAll: () => Promise<CommentEvents[]>;
   update: (
     id: string,
@@ -26,6 +27,10 @@ class commentsRepo implements ICommentRepo {
 
   findOne = async (payload: object) => {
     return await this.ormRepo.findOneBy({ ...payload });
+  };
+
+  find = async (payload: object) => {
+    return await this.ormRepo.find({ where: { ...payload } });
   };
 
   getAll = async () => await this.ormRepo.find();
