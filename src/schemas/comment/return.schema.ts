@@ -6,8 +6,8 @@ export const commentSerializer = (comment: CommentEvents) => {
     comment: comment.comment,
     user: {
       id: comment.userId,
-      user_name: comment.user.user_name,
       avatar_url: comment.user.avatar_url,
+      user_name: comment.user.user_name,
     },
   };
 };
